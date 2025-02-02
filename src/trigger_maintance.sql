@@ -1,0 +1,5 @@
+CREATE TRIGGER maintenance_apres_incident
+AFTER INSERT ON incidents
+FOR EACH ROW
+BEGIN
+	IF NOT EXISTS (SELECT)

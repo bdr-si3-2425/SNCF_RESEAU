@@ -1,0 +1,1 @@
+DROP TABLE departements, lignes, incidents, trains, villes, gares, equipements, posseder, survenir, liaison, causes;
