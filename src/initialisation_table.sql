@@ -53,5 +53,5 @@ CREATE TABLE Causes {
     type VARCHAR(255),
     statut VARCHAR(255),
     date DATE,
-    description TEXT,
+    description TEXT
 };
