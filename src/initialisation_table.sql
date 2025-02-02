@@ -3,16 +3,16 @@ CREATE TABLE departements (
 	nom VARCHAR(100)
 );
 
-CREATE TABLE lignes (
-    id_ligne SERIAL PRIMARY KEY,
-    terminus1 VARCHAR(255) NOT NULL,
-    terminus2 VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE incidents (
     id_incident SERIAL PRIMARY KEY,
     type VARCHAR(100) NOT NULL,
     description TEXT
+);
+
+CREATE TABLE lignes (
+    id_ligne SERIAL PRIMARY KEY,
+    terminus1 VARCHAR(255) NOT NULL,
+    terminus2 VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE trains (
