@@ -20,14 +20,15 @@ CREATE TABLE equipements {
 	libele VARCHAR(255)
 };
 
-CREATE TABLE equipementsGares {
+CREATE TABLE equipements_gares {
 	id_gare INT	FOREIGN KEY,
 	id_equipement INT FOREIGN KEY,
 	emplacement VARCHAR(255),
 	quantite_total INT,
 	quantite_operationelle INT
 };
-CREATE TABLE Survenir {
+
+CREATE TABLE survenues_incidents {
     id_gare INT FOREIGN KEY,
     id_ligne INT FOREIGN KEY,
     id_train INT FOREIGN KEY,
@@ -35,9 +36,9 @@ CREATE TABLE Survenir {
     compte_rendu TEXT,
     impact VARCHAR(255),
     date_heure DATETIME
-    
 };
-CREATE TABLE Liaison {
+
+CREATE TABLE liaisons {
     id_gare1 INT FOREIGN KEY,
     id_gare2 INT FOREIGN KEY,
     date DATE,
@@ -47,7 +48,7 @@ CREATE TABLE Liaison {
     heure_arrive_reelle TIME
 };
 
-CREATE TABLE Causes {
+CREATE TABLE maintenances {
     id_cause INT PRIMARY KEY NOT NULL,
     id_train INT FOREIGN KEY,
     type VARCHAR(255),
@@ -55,3 +56,9 @@ CREATE TABLE Causes {
     date DATE,
     description TEXT
 };
+
+CREATE TABLE lignes {
+    id_ligne INT PRIMARY KEY NOT NULL,
+    terminus1 INT FOREIGN KEY;
+    terminus2 INT FOREIGN KEY;
+}
