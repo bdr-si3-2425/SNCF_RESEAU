@@ -2,11 +2,13 @@ CREATE TABLE departements (
 	id_departement INT PRIMARY KEY NOT NULL,
 	nom VARCHAR(100)
 );
+
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
     terminus1 VARCHAR(255) NOT NULL,
     terminus2 VARCHAR(255) NOT NULL
 );
+
 CREATE TABLE incidents (
     id_incident SERIAL PRIMARY KEY,
     type VARCHAR(100) NOT NULL,
@@ -44,6 +46,7 @@ CREATE TABLE equipements_gares (
 	quantite_total INT,
 	quantite_operationelle INT
 );
+
 CREATE TABLE survenues_incidents (
     id_gare INT REFERENCES gares(id_gare),
     id_ligne INT REFERENCES lignes(id_ligne),
@@ -72,20 +75,3 @@ CREATE TABLE maintenances {
     date DATE,
     description TEXT
 };
-
-CREATE TABLE lignes (
-    id_ligne SERIAL PRIMARY KEY,
-    terminus1 VARCHAR(255) NOT NULL,
-    terminus2 VARCHAR(255) NOT NULL
-);
-CREATE TABLE incidents (
-    id_incident SERIAL PRIMARY KEY,
-    type VARCHAR(100) NOT NULL,
-    description TEXT
-);
-
-CREATE TABLE trains (
-    id_train SERIAL PRIMARY KEY,
-    type VARCHAR(100) NOT NULL,
-    capacite INT NOT NULL
-);
