@@ -20,7 +20,7 @@ CREATE TABLE equipements {
 	libele VARCHAR(255)
 };
 
-CREATE TABLE posseder {
+CREATE TABLE equipementsGares {
 	id_gare INT	FOREIGN KEY,
 	id_equipement INT FOREIGN KEY,
 	emplacement VARCHAR(255),
