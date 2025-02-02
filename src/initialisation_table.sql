@@ -11,8 +11,8 @@ CREATE TABLE incidents (
 
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
-    terminus1 VARCHAR(255) NOT NULL,
-    terminus2 VARCHAR(255) NOT NULL
+    terminus1 INT REFERENCES departements(id_gare),
+    terminus2 INT REFERENCES departements(id_gare)
 );
 
 CREATE TABLE trains (
