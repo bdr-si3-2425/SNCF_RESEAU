@@ -2,11 +2,13 @@ CREATE TABLE departements (
 	id_departement INT PRIMARY KEY NOT NULL,
 	nom VARCHAR(100)
 );
+
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
     terminus1 VARCHAR(255) NOT NULL,
     terminus2 VARCHAR(255) NOT NULL
 );
+
 CREATE TABLE incidents (
     id_incident SERIAL PRIMARY KEY,
     type VARCHAR(100) NOT NULL,
@@ -44,6 +46,7 @@ CREATE TABLE posseder (
 	quantite_total INT,
 	quantite_operationelle INT
 );
+
 CREATE TABLE survenir (
     id_gare INT REFERENCES gares(id_gare),
     id_ligne INT REFERENCES lignes(id_ligne),
@@ -54,6 +57,7 @@ CREATE TABLE survenir (
     date_heure TIMESTAMP
     
 );
+
 CREATE TABLE liaison (
     id_gare1 INT REFERENCES gares(id_gare),
     id_gare2 INT REFERENCES gares(id_gare),
