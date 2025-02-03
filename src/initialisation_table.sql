@@ -46,24 +46,16 @@ CREATE TABLE equipements (
 	libele VARCHAR(255)
 );
 
-CREATE TABLE posseder (
-	id_gare INT	REFERENCES gares(id_gare),
-	id_equipement INT REFERENCES equipements(id_equipement),
-	emplacement VARCHAR(255),
-	quantite_total INT,
-	quantite_operationelle INT
-);
-CREATE TABLE survenir (
+CREATE TABLE equipements_gares (
     id_gare INT REFERENCES gares(id_gare),
-    id_ligne INT REFERENCES lignes(id_ligne),
-    id_train INT REFERENCES trains(id_train),
-    id_incident INT REFERENCES incidents(id_incident),
-    compte_rendu TEXT,
-    impact VARCHAR(255),
-    date_heure TIMESTAMP
-    
+    id_equipement INT REFERENCES equipements(id_equipement),
+    emplacement VARCHAR(255),
+    quantite_total INT NOT NULL CHECK (quantite_total >= 0),
+    quantite_operationelle INT NOT NULL CHECK (quantite_operationelle >= 0 AND quantite_operationelle <= quantite_total),
+    PRIMARY KEY (id_gare, id_equipement)
 );
-CREATE TABLE liaison (
+
+CREATE TABLE liaisons (
     id_gare1 INT REFERENCES gares(id_gare),
     id_gare2 INT REFERENCES gares(id_gare),
     date DATE,
@@ -73,7 +65,7 @@ CREATE TABLE liaison (
     heure_arrive_reelle TIME
 );
 
-CREATE TABLE causes (
+CREATE TABLE maintenances (
     id_cause INT PRIMARY KEY NOT NULL,
     id_train INT REFERENCES trains(id_train),
     type VARCHAR(255),
