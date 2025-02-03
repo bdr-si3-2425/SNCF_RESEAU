@@ -30,6 +30,7 @@ CREATE TABLE gares (
 	id_gare SERIAL PRIMARY KEY,
 	nom VARCHAR(100),
 	id_ville INT,
+	nbr_quai INT NOT NULL,
 	FOREIGN KEY (id_ville) REFERENCES villes(id_ville)
 );
 CREATE TABLE lignes (
