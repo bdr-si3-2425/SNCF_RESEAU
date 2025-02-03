@@ -18,6 +18,16 @@ CREATE TABLE trains (
     capacite INT NOT NULL
 );
 
+CREATE TABLE survenues_incidents (
+    id_gare INT REFERENCES gares(id_gare),
+    id_ligne INT REFERENCES lignes(id_ligne),
+    id_train INT REFERENCES trains(id_train),
+    id_incident INT REFERENCES incidents(id_incident),
+    compte_rendu TEXT,
+    impact VARCHAR(255),
+    date_heure TIMESTAMP NOT NULL,
+    PRIMARY KEY (id_gare, id_ligne, id_train, id_incident, date_heure)
+);
 
 CREATE TABLE villes (
 	id_ville INT PRIMARY KEY NOT NULL,
