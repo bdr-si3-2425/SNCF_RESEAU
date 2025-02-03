@@ -25,19 +25,19 @@ CREATE TABLE survenues_incidents (
 );
 
 CREATE TABLE departements (
-	id_departement INT PRIMARY KEY NOT NULL,
+	id_departement SERIAL PRIMARY KEY,
 	nom VARCHAR(100)
 );
 
 CREATE TABLE villes (
-	id_ville INT PRIMARY KEY NOT NULL,
+	id_ville SERIAL PRIMARY KEY,
 	nom VARCHAR(100),
 	id_departement INT,
 	FOREIGN KEY (id_departement) REFERENCES departements(id_departement)
 );
 
 CREATE TABLE gares (
-	id_gare INT PRIMARY KEY NOT NULL,
+	id_gare SERIAL PRIMARY KEY,
 	nom VARCHAR(100),
 	id_ville INT,
 	FOREIGN KEY (id_ville) REFERENCES villes(id_ville)
@@ -53,7 +53,7 @@ CREATE TABLE lignes (
 );
 
 CREATE TABLE equipements (
-	id_equipement INT PRIMARY KEY NOT NULL,
+	id_equipement SERIAL PRIMARY KEY,
 	libele VARCHAR(255)
 );
 
@@ -79,7 +79,7 @@ CREATE TABLE liaisons (
 );
 
 CREATE TABLE maintenances (
-    id_cause INT PRIMARY KEY NOT NULL,
+    id_cause SERIAL PRIMARY KEY,
     id_train INT REFERENCES trains(id_train),
     type VARCHAR(255),
     statut VARCHAR(255),
