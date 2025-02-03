@@ -7,28 +7,18 @@ CREATE TABLE incidents (
     description TEXT
 );
 
-CREATE TABLE trains (
-    id_train SERIAL PRIMARY KEY,
-    type VARCHAR(100) NOT NULL,
-    capacite INT NOT NULL
-);
-
-CREATE TABLE survenues_incidents (
-    id_gare INT REFERENCES gares(id_gare),
-    id_ligne INT REFERENCES lignes(id_ligne),
-    id_train INT REFERENCES trains(id_train),
-    id_incident INT REFERENCES incidents(id_incident),
-    compte_rendu TEXT,
-    impact VARCHAR(255),
-    date_heure TIMESTAMP NOT NULL,
-    PRIMARY KEY (id_gare, id_ligne, id_train, id_incident, date_heure)
-);
-
 CREATE TABLE departements (
 	id_departement SERIAL PRIMARY KEY,
 	nom VARCHAR(100)
 );
 
+
+
+CREATE TABLE trains (
+    id_train SERIAL PRIMARY KEY,
+    type VARCHAR(100) NOT NULL,
+    capacite INT NOT NULL
+);
 CREATE TABLE villes (
 	id_ville SERIAL PRIMARY KEY,
 	nom VARCHAR(100),
@@ -42,14 +32,27 @@ CREATE TABLE gares (
 	id_ville INT,
 	FOREIGN KEY (id_ville) REFERENCES villes(id_ville)
 );
-
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
     terminus1 INT NOT NULL,
     terminus2 INT NOT NULL,
     FOREIGN KEY (terminus1) REFERENCES gares(id_gare),
     FOREIGN KEY (terminus2) REFERENCES gares(id_gare),
-    CONSTRAINT unique_ligne UNIQUE (LEAST(terminus1, terminus2), GREATEST(terminus1, terminus2)) -- Permet d'éviter les doublons (A,B) (B,A)
+    terminus1_norm INT GENERATED ALWAYS AS (LEAST(terminus1, terminus2)) STORED,
+    terminus2_norm INT GENERATED ALWAYS AS (GREATEST(terminus1, terminus2)) STORED,
+    CONSTRAINT unique_ligne UNIQUE (terminus1_norm, terminus2_norm) -- Permet d'éviter les doublons (A,B) (B,A)
+);
+
+
+CREATE TABLE survenues_incidents (
+    id_gare INT REFERENCES gares(id_gare),
+    id_ligne INT REFERENCES lignes(id_ligne),
+    id_train INT REFERENCES trains(id_train),
+    id_incident INT REFERENCES incidents(id_incident),
+    compte_rendu TEXT,
+    impact VARCHAR(255),
+    date_heure TIMESTAMP NOT NULL,
+    PRIMARY KEY (id_gare, id_ligne, id_train, id_incident, date_heure)
 );
 
 CREATE TABLE equipements (
@@ -66,19 +69,35 @@ CREATE TABLE equipements_gares (
     PRIMARY KEY (id_gare, id_equipement)
 );
 
-CREATE TABLE liaisons (
+CREATE TABLE liaisons(
+	id_liaison SERIAL PRIMARY KEY,
+	id_gare1 INT NOT NULL,
+	id_gare2 INT NOT NULL,
+	FOREIGN KEY (id_gare1) REFERENCES gares(id_gare),
+	FOREIGN KEY (id_gare2) REFERENCES gares(id_gare),
+	id_gare1_norm INT GENERATED ALWAYS AS (LEAST(id_gare1, id_gare2)) STORED,
+    id_gare2_norm INT GENERATED ALWAYS AS (GREATEST(id_gare1, id_gare2)) STORED,
+    CONSTRAINT unique_gare UNIQUE (id_gare1_norm, id_gare2_norm) -- Permet d'éviter les doublons (A,B) (B,A)
+);
+
+CREATE TABLE lignes_liaisons(
+	id_liaison INT REFERENCES liaisons(id_liaison),
+	id_ligne INT REFERENCES lignes(id_ligne),
+	PRIMARY KEY (id_liaison,id_ligne)
+);
+
+CREATE TABLE trajets (
     id_train INT REFERENCES trains(id_train) ON DELETE CASCADE,
-    id_gare1 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
-    id_gare2 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
+	id_liaison INT REFERENCES liaisons(id_liaison) ON DELETE CASCADE,
     date_depart_prevu TIME,
     date_arrive_prevu TIME,
     date_depart_reelle TIME,
     date_arrive_reelle TIME,
-    heure_depart_prevu TIME,
-    heure_arrive_prevu TIME,
+    heure_depart_prevue TIME,
+    heure_arrive_prevue TIME,
     heure_depart_reelle TIME,
-    heure_arrive_reelle TIME,
-    PRIMARY KEY (id_train, id_gare1, id_gare2, date)
+    heure_arrivee_reelle TIME,
+    PRIMARY KEY (id_train, id_liaison)
 );
 
 CREATE TABLE maintenances (
@@ -89,3 +108,4 @@ CREATE TABLE maintenances (
     date DATE,
     description TEXT
 );
+
