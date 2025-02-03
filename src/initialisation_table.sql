@@ -67,6 +67,7 @@ CREATE TABLE equipements_gares (
 );
 
 CREATE TABLE liaisons (
+    id_train INT REFERENCES trains(id_train) ON DELETE CASCADE,
     id_gare1 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
     id_gare2 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
     date DATE NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE liaisons (
     heure_arrive_prevu TIME,
     heure_depart_reelle TIME,
     heure_arrive_reelle TIME,
-    PRIMARY KEY (id_gare1, id_gare2, date)
+    PRIMARY KEY (id_train, id_gare1, id_gare2, date)
 );
 
 CREATE TABLE maintenances (
