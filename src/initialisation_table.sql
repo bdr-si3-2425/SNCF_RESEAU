@@ -1,8 +1,3 @@
-CREATE TABLE departements (
-	id_departement INT PRIMARY KEY NOT NULL,
-	nom VARCHAR(100)
-);
-
 CREATE TYPE gravite_type AS ENUM ('sans impact', 'avec impact');
 
 CREATE TABLE incidents (
@@ -29,6 +24,11 @@ CREATE TABLE survenues_incidents (
     PRIMARY KEY (id_gare, id_ligne, id_train, id_incident, date_heure)
 );
 
+CREATE TABLE departements (
+	id_departement INT PRIMARY KEY NOT NULL,
+	nom VARCHAR(100)
+);
+
 CREATE TABLE villes (
 	id_ville INT PRIMARY KEY NOT NULL,
 	nom VARCHAR(100),
@@ -45,10 +45,11 @@ CREATE TABLE gares (
 
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
-	terminus1 INT,
-	terminus2 INT,
+    terminus1 INT NOT NULL,
+    terminus2 INT NOT NULL,
     FOREIGN KEY (terminus1) REFERENCES gares(id_gare),
-    FOREIGN KEY (terminus2) REFERENCES gares(id_gare)
+    FOREIGN KEY (terminus2) REFERENCES gares(id_gare),
+    CONSTRAINT unique_ligne UNIQUE (LEAST(terminus1, terminus2), GREATEST(terminus1, terminus2)) -- Permet d'éviter les doublons (A,B) (B,A)
 );
 
 CREATE TABLE equipements (
@@ -66,13 +67,14 @@ CREATE TABLE equipements_gares (
 );
 
 CREATE TABLE liaisons (
-    id_gare1 INT REFERENCES gares(id_gare),
-    id_gare2 INT REFERENCES gares(id_gare),
-    date DATE,
+    id_gare1 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
+    id_gare2 INT REFERENCES gares(id_gare) ON DELETE CASCADE,
+    date DATE NOT NULL,
     heure_depart_prevu TIME,
     heure_arrive_prevu TIME,
     heure_depart_reelle TIME,
-    heure_arrive_reelle TIME
+    heure_arrive_reelle TIME,
+    PRIMARY KEY (id_gare1, id_gare2, date)
 );
 
 CREATE TABLE maintenances (
@@ -83,9 +85,3 @@ CREATE TABLE maintenances (
     date DATE,
     description TEXT
 );
-
-
-
-
-
-
