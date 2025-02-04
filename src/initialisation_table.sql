@@ -13,11 +13,6 @@ CREATE TABLE departements (
 	nom VARCHAR(100)
 );
 
-CREATE TABLE types_maintenance (
-	id_type_maintenance SERIAL PRIMARY KEY,
-	nom VARCHAR(100)
-);
-
 CREATE TABLE lignes (
     id_ligne SERIAL PRIMARY KEY,
 	nom VARCHAR(100)
@@ -150,10 +145,8 @@ CREATE TABLE trajets (
 CREATE TABLE maintenances (
     id_maintenance SERIAL PRIMARY KEY,
     id_train INT NOT NULL,
-    id_type_maintenance INT NOT NULL,
-    date_debut_maintenance TIMESTAMP NOT NULL,
-	date_fin_maintenance TIMESTAMP DEFAULT NULL,
-    description TEXT,
+    date_heure_debut_maintenance TIMESTAMP NOT NULL,
+	date_heure_fin_maintenance TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_train) REFERENCES trains(id_train),
 	FOREIGN KEY (id_type_maintenance) REFERENCES types_maintenance(id_type_maintenance)
 );
