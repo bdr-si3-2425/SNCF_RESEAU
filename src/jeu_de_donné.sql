@@ -1,0 +1,116 @@
+
+INSERT INTO departements (id_departement, nom) VALUES
+(75, 'Paris'),
+(59, 'Nord'),
+(13, 'Bouches-du-Rhône'),
+(69, 'Rhône'),
+(6, 'Alpes-Maritimes'),
+(33, 'Gironde'),
+(44, 'Loire-Atlantique'),
+(67, 'Bas-Rhin'),
+(31, 'Haute-Garonne');
+
+
+INSERT INTO villes (id_ville, nom, id_departement) VALUES
+(1, 'Paris', 75),
+(2, 'Lille', 59),
+(3, 'Marseille', 13),
+(4, 'Lyon', 69),
+(5, 'Nice', 6),
+(6, 'Bordeaux', 33),
+(7, 'Nantes', 44),
+(8, 'Strasbourg', 67),
+(9, 'Toulouse', 31);
+
+
+INSERT INTO gares (id_gare, nom, id_ville) VALUES
+(1, 'Gare de Lyon', 1),
+(2, 'Gare du Nord', 1),
+(3, 'Gare de Lille', 2),
+(4, 'Gare de Marseille', 3),
+(5, 'Gare de Nice', 5),
+(6, 'Gare de Lyon-Part-Dieu', 4),
+(7, 'Gare de Bordeaux', 6),
+(8, 'Gare de Nantes', 7),
+(9, 'Gare de Strasbourg', 8),
+(10, 'Gare de Toulouse', 9);
+
+
+INSERT INTO quais (id_quai, id_gare, nom) VALUES
+(1, 1, 'Quai 1'), (2, 1, 'Quai 2'),
+(3, 2, 'Quai 1'), (4, 2, 'Quai 2'),
+(5, 3, 'Quai 1'), (6, 3, 'Quai 2'),
+(7, 4, 'Quai 1'), (8, 4, 'Quai 2'),
+(9, 5, 'Quai 1'), (10, 5, 'Quai 2'),
+(11, 6, 'Quai 1'), (12, 6, 'Quai 2'),
+(13, 7, 'Quai 1'), (14, 7, 'Quai 2'),
+(15, 8, 'Quai 1'), (16, 8, 'Quai 2'),
+(17, 9, 'Quai 1'), (18, 9, 'Quai 2'),
+(19, 10, 'Quai 1'), (20, 10, 'Quai 2');
+
+
+INSERT INTO liaisons (id_liaison, id_quai1, id_quai2) VALUES
+(1, 1, 3), -- Paris -> Lille
+(2, 3, 5), -- Lille -> Marseille
+(3, 7, 9), -- Marseille -> Nice
+(4, 1, 11), -- Paris -> Lyon
+(5, 11, 7), -- Lyon -> Marseille
+(6, 1, 13), -- Paris -> Bordeaux
+(7, 13, 15), -- Bordeaux -> Nantes
+(8, 1, 17), -- Paris -> Strasbourg
+(9, 1, 19), -- Paris -> Toulouse
+(10, 17, 19); -- Strasbourg -> Toulouse
+
+
+INSERT INTO lignes (id_ligne, nom) VALUES
+(1, 'Ligne Paris-Lille'),
+(2, 'Ligne Lille-Marseille'),
+(3, 'Ligne Marseille-Nice'),
+(4, 'Ligne Paris-Lyon'),
+(5, 'Ligne Lyon-Marseille'),
+(6, 'Ligne Paris-Bordeaux'),
+(7, 'Ligne Bordeaux-Nantes'),
+(8, 'Ligne Paris-Strasbourg'),
+(9, 'Ligne Paris-Toulouse'),
+(10, 'Ligne Strasbourg-Toulouse');
+
+
+INSERT INTO trains (id_train, type_train, id_ligne_habituelle, capacite) VALUES
+(1, 'TGV', 1, 500),
+(2, 'TER', 2, 200),
+(3, 'Intercite', 3, 300),
+(4, 'TGV', 4, 500),
+(5, 'TER', 5, 200),
+(6, 'TGV', 6, 500),
+(7, 'TER', 7, 200),
+(8, 'TGV', 8, 500),
+(9, 'TGV', 9, 500),
+(10, 'Intercite', 10, 300);
+
+
+INSERT INTO incidents (id_incident, type_incident, gravite, description) VALUES
+(1, 'Déraillement', 'avec impact', 'Déraillement sur Paris-Lille'),
+(2, 'Panne électrique', 'sans impact', 'Panne sur Lille-Marseille'),
+(3, 'Grève', 'avec impact', 'Grève sur Marseille-Nice'),
+(4, 'Incident technique', 'avec impact', 'Problème signalé sur Bordeaux-Nantes'),
+(5, 'Accident voyageur', 'avec impact', 'Accident à la Gare de Lyon');
+
+
+INSERT INTO equipements_gares (id_gare, id_equipement, emplacement, quantite_total, quantite_operationelle) VALUES
+(1, 1, 'Hall principal', 2, 2),
+(1, 2, 'Quai 1', 1, 1),
+(2, 3, 'Entrée nord', 3, 2),
+(6, 1, 'Quai 2', 1, 1),
+(6, 2, 'Entrée principale', 2, 1),
+(7, 3, 'Hall', 2, 2);
+
+
+INSERT INTO maintenances (id_maintenance, id_train, date_heure_debut_maintenance) VALUES
+(1, 1, '2023-10-01 07:00:00'), -- Avant départ
+(2, 4, '2023-10-01 12:00:00'), -- Après trajet
+(3, 6, '2023-10-02 05:00:00'); -- Maintenance préventive
+
+
+INSERT INTO incidents_maintenances (id_maintenance, id_incident) VALUES
+(1, 1),
+(2, 5);
