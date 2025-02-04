@@ -78,7 +78,7 @@ CREATE TABLE incidents_lignes (
     id_incident INT NOT NULL,
     compte_rendu TEXT,
     date_heure_debut TIMESTAMP NOT NULL,
-	date_heure_fin TIMESTAMP,
+	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_ligne) REFERENCES lignes(id_ligne),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
     PRIMARY KEY (id_ligne, id_incident, date_heure_debut, date_heure_fin)
@@ -89,7 +89,7 @@ CREATE TABLE incidents_quais (
     id_incident INT NOT NULL,
     compte_rendu TEXT,
     date_heure_debut TIMESTAMP NOT NULL,
-	date_heure_fin TIMESTAMP,
+	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_quai) REFERENCES quais(id_quai),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
     PRIMARY KEY (id_quai, id_incident, date_heure_debut, date_heure_fin)
@@ -100,7 +100,7 @@ CREATE TABLE incidents_gares (
     id_incident INT NOT NULL,
     compte_rendu TEXT,
     date_heure_debut TIMESTAMP NOT NULL,
-	date_heure_fin TIMESTAMP,
+	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_gare) REFERENCES gares(id_gare),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
     PRIMARY KEY (id_gare, id_incident, date_heure_debut, date_heure_fin)
@@ -111,7 +111,7 @@ CREATE TABLE incidents_trains (
     id_incident INT NOT NULL,
     compte_rendu TEXT,
     date_heure_debut TIMESTAMP NOT NULL,
-	date_heure_fin TIMESTAMP,
+	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_train) REFERENCES trains(id_train),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
     PRIMARY KEY (id_train, id_incident, date_heure_debut, date_heure_fin)
@@ -140,8 +140,8 @@ CREATE TABLE trajets (
     id_liaison INT NOT NULL,
 	date_heure_depart_prevue TIMESTAMP NOT NULL,
 	date_heure_arrive_prevue TIMESTAMP NOT NULL,
-	date_heure_depart_reelle TIMESTAMP,
-	date_heure_arrive_reelle TIMESTAMP,
+	date_heure_depart_reelle TIMESTAMP DEFAULT NULL,
+	date_heure_arrive_reelle TIMESTAMP DEFAULT NULL,
 
 	FOREIGN KEY (id_train) REFERENCES trains(id_train) ON DELETE CASCADE,
 	FOREIGN KEY (id_liaison) REFERENCES liaisons(id_liaison) ON DELETE CASCADE
@@ -152,7 +152,7 @@ CREATE TABLE maintenances (
     id_train INT NOT NULL,
     id_type_maintenance INT NOT NULL,
     date_debut_maintenance TIMESTAMP NOT NULL,
-	date_fin_maintenance TIMESTAMP,
+	date_fin_maintenance TIMESTAMP DEFAULT NULL,
     description TEXT,
 	FOREIGN KEY (id_train) REFERENCES trains(id_train),
 	FOREIGN KEY (id_type_maintenance) REFERENCES types_maintenance(id_type_maintenance)
