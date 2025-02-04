@@ -20,8 +20,8 @@ Gares_Impactees AS (
 ),
 Liaisons_Impactees AS (
     SELECT ll.id_liaison
-    FROM incidents_lignes il
-    JOIN lignes_liaisons ll ON il.id_ligne = ll.id_liaison
+    FROM lignes_liaisons ll
+    JOIN incidents_lignes il ON ll.id_ligne = il.id_ligne
     WHERE il.id_ligne = {ID_LIGNE_INCIDENT}
       AND date_heure_fin IS NULL
 ),
@@ -39,16 +39,10 @@ Trajets_Alternatifs AS (
     JOIN gares g1 ON q1.id_gare = g1.id_gare
     JOIN gares g2 ON q2.id_gare = g2.id_gare
     JOIN trains t ON tr.id_train = t.id_train
-    WHERE NOT EXISTS (
-        SELECT 1 
-        FROM Gares_Impactees gi 
-        WHERE gi.id_gare IN (q1.id_gare, q2.id_gare)
-    )
-    AND NOT EXISTS (
-        SELECT 1
-        FROM Liaisons_Impactees lii
-        WHERE lii.id_liaison = tr.id_liaison
-    )
+    LEFT JOIN Gares_Impactees gi ON gi.id_gare IN (q1.id_gare, q2.id_gare)
+    LEFT JOIN Liaisons_Impactees lii ON lii.id_liaison = tr.id_liaison
+    WHERE gi.id_gare IS NULL
+    AND lii.id_liaison IS NULL
 )
 SELECT * FROM Trajets_Alternatifs
 ORDER BY gare_depart, gare_arrivee;
