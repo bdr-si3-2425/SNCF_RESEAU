@@ -147,8 +147,7 @@ CREATE TABLE maintenances (
     id_train INT NOT NULL,
     date_heure_debut_maintenance TIMESTAMP NOT NULL,
 	date_heure_fin_maintenance TIMESTAMP DEFAULT NULL,
-	FOREIGN KEY (id_train) REFERENCES trains(id_train),
-	FOREIGN KEY (id_type_maintenance) REFERENCES types_maintenance(id_type_maintenance)
+	FOREIGN KEY (id_train) REFERENCES trains(id_train)
 );
 
 CREATE TABLE incidents_maintenances (
