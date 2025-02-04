@@ -1,3 +1,3 @@
-DROP TABLE departements, lignes, incidents, trains, villes, gares, equipements, survenues_incidents, trajets, liaisons,lignes_liaisons, maintenances, equipements_gares CASCADE;
+DROP TABLE departements, lignes, incidents, trains, villes, gares, equipements, incidents_lignes, incidents_quais, incidents_gares, incidents_trains, trajets, liaisons, lignes_liaisons, maintenances, equipements_gares, types_maintenance, incidents_maintenances, quais CASCADE;
 
-DROP TYPE gravite_type CASCADE;
+DROP TYPE GRAVITE_TYPE, TRAIN_TYPE CASCADE;
