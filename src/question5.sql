@@ -1,14 +1,29 @@
 WITH Ligne_Impactee AS (
     SELECT id_ligne
-    FROM lignes
-    WHERE id_ligne = {ID_LIGNE_INCIDENT} -- Remplacer par l'ID de la ligne impactée
+    FROM incidents_lignes
+    WHERE id_ligne = {ID_LIGNE_INCIDENT}
+      AND date_heure_fin IS NULL
 ),
 Gares_Impactees AS (
+    SELECT ig.id_gare
+    FROM incidents_gares ig
+    JOIN incidents i ON ig.id_incident = i.id_incident
+    WHERE i.gravite = 'avec impact'
+      AND date_heure_fin IS NULL
+    UNION
     SELECT q.id_gare
-    FROM liaisons li
-    JOIN quais q ON q.id_quai IN (li.id_quai1, li.id_quai2)
-    JOIN lignes_liaisons ll ON li.id_liaison = ll.id_liaison
-    WHERE ll.id_ligne = {ID_LIGNE_INCIDENT}
+    FROM incidents_quais iq
+    JOIN quais q ON iq.id_quai = q.id_quai
+    JOIN incidents i ON iq.id_incident = i.id_incident
+    WHERE i.gravite = 'avec impact'
+      AND date_heure_fin IS NULL
+),
+Liaisons_Impactees AS (
+    SELECT ll.id_liaison
+    FROM incidents_lignes il
+    JOIN lignes_liaisons ll ON il.id_ligne = ll.id_liaison
+    WHERE il.id_ligne = {ID_LIGNE_INCIDENT}
+      AND date_heure_fin IS NULL
 ),
 Trajets_Alternatifs AS (
     SELECT DISTINCT 
@@ -28,7 +43,12 @@ Trajets_Alternatifs AS (
         SELECT 1 
         FROM Gares_Impactees gi 
         WHERE gi.id_gare IN (q1.id_gare, q2.id_gare)
-    ) -- Exclure les trajets passant par une gare impactée
+    )
+    AND NOT EXISTS (
+        SELECT 1
+        FROM Liaisons_Impactees lii
+        WHERE lii.id_liaison = tr.id_liaison
+    )
 )
 SELECT * FROM Trajets_Alternatifs
 ORDER BY gare_depart, gare_arrivee;
