@@ -76,7 +76,7 @@ CREATE TABLE incidents_lignes (
 	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_ligne) REFERENCES lignes(id_ligne),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
-    PRIMARY KEY (id_ligne, id_incident, date_heure_debut, date_heure_fin)
+    PRIMARY KEY (id_ligne, id_incident, date_heure_debut)
 );
 
 CREATE TABLE incidents_quais (
@@ -87,7 +87,7 @@ CREATE TABLE incidents_quais (
 	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_quai) REFERENCES quais(id_quai),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
-    PRIMARY KEY (id_quai, id_incident, date_heure_debut, date_heure_fin)
+    PRIMARY KEY (id_quai, id_incident, date_heure_debut)
 );
 
 CREATE TABLE incidents_gares (
@@ -98,7 +98,7 @@ CREATE TABLE incidents_gares (
 	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_gare) REFERENCES gares(id_gare),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
-    PRIMARY KEY (id_gare, id_incident, date_heure_debut, date_heure_fin)
+    PRIMARY KEY (id_gare, id_incident, date_heure_debut)
 );
 
 CREATE TABLE incidents_trains (
@@ -109,7 +109,7 @@ CREATE TABLE incidents_trains (
 	date_heure_fin TIMESTAMP DEFAULT NULL,
 	FOREIGN KEY (id_train) REFERENCES trains(id_train),
 	FOREIGN KEY (id_incident) REFERENCES incidents(id_incident),
-    PRIMARY KEY (id_train, id_incident, date_heure_debut, date_heure_fin)
+    PRIMARY KEY (id_train, id_incident, date_heure_debut)
 );
 
 CREATE TABLE equipements (
