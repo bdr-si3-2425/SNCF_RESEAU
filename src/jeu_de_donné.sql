@@ -136,14 +136,25 @@ INSERT INTO equipements_gares (id_gare, id_equipement, emplacement, quantite_tot
 (9, 4, 'Hall', 3, 3),
 (10, 5, 'Quai 1', 2, 2);
 
-INSERT INTO maintenances (id_maintenance, id_train, date_heure_debut_maintenance) VALUES
-(1, 1, '2023-10-01 07:00:00'), -- Avant départ
-(2, 4, '2023-10-01 12:00:00'), -- Après trajet
-(3, 6, '2023-10-02 05:00:00'); -- Maintenance préventive
+-- Insertion des maintenances avec date de fin pour certains trains
+INSERT INTO maintenances (id_maintenance, id_train, date_heure_debut_maintenance, date_heure_fin_maintenance) VALUES
+(1, 1, '2023-09-01 07:00:00', '2023-09-01 09:00:00'), -- Train 1, maintenance finie
+(2, 4, '2023-10-01 12:00:00', '2023-10-01 14:00:00'), -- Train 4, maintenance finie
+(3, 6, '2023-10-02 05:00:00', '2023-10-02 07:00:00'), -- Train 6, maintenance finie
+(4, 2, '2023-09-10 08:00:00', NULL), -- Train 2, maintenance non finie
+(5, 3, '2023-09-12 10:00:00', NULL), -- Train 3, maintenance non finie
+(6, 5, '2023-09-15 14:00:00', NULL), -- Train 5, maintenance non finie
+(7, 7, '2023-09-17 16:00:00', NULL), -- Train 7, maintenance non finie
+(8, 8, '2023-09-20 18:00:00', NULL), -- Train 8, maintenance non finie
+(9, 9, '2023-09-25 06:00:00', NULL), -- Train 9, maintenance non finie
+(10, 10, '2023-09-28 09:00:00', NULL); -- Train 10, maintenance non finie
 
+-- Insertion des incidents associés aux maintenances
 INSERT INTO incidents_maintenances (id_maintenance, id_incident) VALUES
-(1, 1),
-(2, 5);
+(1, 1),  -- Train 1, maintenance terminée, incident associé
+(2, 5),  -- Train 4, maintenance terminée, incident associé
+(3, 4);  -- Train 6, maintenance terminée, incident associé
+
 
 INSERT INTO trajets (id_trajet, id_train, id_liaison, date_heure_depart_prevue, date_heure_arrive_prevue) VALUES
 (1, 1, 1, '2023-10-01 08:00:00', '2023-10-01 10:00:00'), -- Paris-Lille
