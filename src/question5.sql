@@ -1,7 +1,7 @@
 WITH Ligne_Impactee AS (
     SELECT id_ligne
     FROM incidents_lignes
-    WHERE id_ligne = {ID_LIGNE_INCIDENT}
+    WHERE id_ligne = $1
       AND date_heure_fin IS NULL
 ),
 Gares_Impactees AS (
@@ -22,7 +22,7 @@ Liaisons_Impactees AS (
     SELECT ll.id_liaison
     FROM lignes_liaisons ll
     JOIN incidents_lignes il ON ll.id_ligne = il.id_ligne
-    WHERE il.id_ligne = {ID_LIGNE_INCIDENT}
+    WHERE il.id_ligne = $1
       AND date_heure_fin IS NULL
 ),
 Trajets_Alternatifs AS (
