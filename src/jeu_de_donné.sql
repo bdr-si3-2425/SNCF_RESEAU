@@ -116,7 +116,10 @@ INSERT INTO incidents_quais (id_quai, id_incident, compte_rendu, date_heure_debu
 
 INSERT INTO incidents_trains (id_train, id_incident, compte_rendu, date_heure_debut) VALUES
 (1, 1, 'Déraillement', '2023-10-01 09:00:00'),
-(6, 4, 'Incident technique', '2023-10-02 10:00:00');
+(6, 4, 'Incident technique', '2023-10-02 10:00:00'),
+(4, 2, 'Panne électrique sur Marseille-Lille', '2023-10-02 16:00:00'), 
+(4, 6, 'Retard sur Paris-Strasbourg', '2023-10-02 17:00:00'),
+(4, 2, 'Panne sur la ligne Paris-Toulouse', '2023-10-02 18:00:00');
 
 
 INSERT INTO equipements (id_equipement, libele) VALUES
