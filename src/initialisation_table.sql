@@ -53,7 +53,7 @@ CREATE TABLE liaisons(
 	id_quai1 INT NOT NULL,
 	id_quai2 INT NOT NULL,
 	FOREIGN KEY (id_quai1) REFERENCES quais(id_quai),
-	FOREIGN KEY (id_quai2) REFERENCES quais(id_quai),
+	FOREIGN KEY (id_quai2) REFERENCES quais(id_quai)
 	-- id_quai1_norm INT GENERATED ALWAYS AS (LEAST(id_quai1, id_quai2)) STORED,
  --    id_quai2_norm INT GENERATED ALWAYS AS (GREATEST(id_quai1, id_quai2)) STORED,
  --    CONSTRAINT unique_liaisons UNIQUE (id_quai1_norm, id_quai2_norm) -- Permet d'éviter les doublons (A,B) (B,A)
