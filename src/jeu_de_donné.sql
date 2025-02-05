@@ -78,7 +78,7 @@ INSERT INTO liaisons (id_liaison, id_quai1, id_quai2) VALUES
 
 -- Insertion des lignes
 
-INSERT INTO lignes (id_ligne, nom) VALUES
+INSERT INTO lignes (nom) VALUES
 ('Ligne Paris-Lille'),
 ('Ligne Lille-Marseille'),
 ('Ligne Marseille-Nice'),
