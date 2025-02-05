@@ -1,9 +1,11 @@
-/* Un train peut être réaffecté si :
-
-    - Il est compatible avec la ligne : Il doit être adapté aux infrastructures (ex : trains à grande vitesse pour lignes TGV, trains régionaux pour les lignes locales).
-    - Il a une capacité suffisante : Pour éviter une surcharge de passagers.
-    - Il est proche géographiquement : Un train situé dans une gare à proximité peut être réaffecté plus rapidement.
-    - Il est en état opérationnel : Il ne doit pas être en maintenance ou signalé comme défectueux.*/
+CREATE VIEW trains_disponibles AS
+    -- Sélectionner les trains disponibles (pas en maintenance)
+    SELECT t.id_train, t.id_ligne_habituelle, t.type_train, t.capacite, l.nom AS ligne_habituelle
+    FROM trains t
+    JOIN lignes l ON t.id_ligne_habituelle = l.id_ligne
+    LEFT JOIN maintenances m ON t.id_train = m.id_train 
+        AND m.date_heure_fin_maintenance IS NULL
+    WHERE m.id_maintenance IS NULL;
 
 WITH ligne_en_panne AS (
     -- Trouver une ligne ayant un incident grave en cours
@@ -13,15 +15,6 @@ WITH ligne_en_panne AS (
     WHERE i.gravite = 'avec impact' 
       AND il.date_heure_fin IS NULL
     LIMIT 1
-),
-trains_disponibles AS (
-    -- Sélectionner les trains disponibles (pas en maintenance)
-    SELECT t.id_train, t.id_ligne_habituelle, t.type_train, t.capacite, l.nom AS ligne_habituelle
-    FROM trains t
-    JOIN lignes l ON t.id_ligne_habituelle = l.id_ligne
-    LEFT JOIN maintenances m ON t.id_train = m.id_train 
-        AND m.date_heure_fin_maintenance IS NULL
-    WHERE m.id_maintenance IS NULL
 ),
 ligne_panne_details AS (
     -- Récupérer le type et les caractéristiques de la ligne en panne

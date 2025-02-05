@@ -1,58 +1,55 @@
--- 1. Ajouter la nouvelle ligne (vérifier si le nom est unique)
-WITH new_ligne AS (
-    SELECT id_ligne FROM lignes WHERE nom = 'Nouvelle Ligne' LIMIT 1
-)
--- Si la ligne n'existe pas déjà, on l'ajoute
-INSERT INTO lignes (nom) 
-SELECT 'Nouvelle Ligne'
-WHERE NOT EXISTS (SELECT 1 FROM new_ligne);
+DO $$  
+DECLARE  
+    new_ligne_id INT;
+    new_train_id INT;
+BEGIN  
+    -- Vérifier si la ligne existe déjà
+    SELECT id_ligne INTO new_ligne_id 
+    FROM lignes 
+    WHERE nom = 'Ligne Directe Optimisée';
 
--- 2. Ajouter les liaisons entre les quais existants et la nouvelle ligne
-WITH new_ligne AS (
-    SELECT id_ligne FROM lignes WHERE nom = 'Nouvelle Ligne' LIMIT 1
-)
--- Vérifier si la liaison n'existe pas déjà avant d'ajouter
-INSERT INTO liaisons (id_quai1, id_quai2)
-SELECT 11, 12  -- Remplacer par les ID des quais existants
-FROM new_ligne
-WHERE NOT EXISTS (
-    SELECT 1 FROM liaisons 
-    WHERE id_quai1_norm = LEAST(11, 12) 
-    AND id_quai2_norm = GREATEST(11, 12)
-);
+    -- Si la ligne n'existe pas, on l'ajoute
+    IF NOT FOUND THEN  
+        INSERT INTO lignes (nom)  
+        VALUES ('Ligne Directe Optimisée')  
+        RETURNING id_ligne INTO new_ligne_id;  
+    END IF;
 
--- 3. Ajouter un train à la nouvelle ligne
-WITH new_ligne AS (
-    SELECT id_ligne FROM lignes WHERE nom = 'Nouvelle Ligne' LIMIT 1
-)
-INSERT INTO trains (type_train, id_ligne_habituelle, capacite)
-SELECT 'TGV', id_ligne, 500
-FROM new_ligne;
+    -- Associer la nouvelle ligne aux liaisons déjà utilisées par plusieurs trains  
+    INSERT INTO lignes_liaisons (id_ligne, id_liaison)  
+    SELECT new_ligne_id, id_liaison  
+    FROM (  
+        SELECT id_liaison  
+        FROM trajets  
+        GROUP BY id_liaison  
+        HAVING COUNT(DISTINCT id_train) > 1  
+        ORDER BY COUNT(*) DESC  
+        LIMIT 10  
+    ) AS subquery  
+    ON CONFLICT DO NOTHING;  -- Empêcher les doublons  
 
--- 4. Ajouter un trajet pour ce train
-WITH new_train AS (
-    SELECT id_train FROM trains WHERE type_train = 'TGV' LIMIT 1
-),
-new_liaison AS (
-    SELECT id_liaison FROM liaisons WHERE id_quai1 = 11 AND id_quai2 = 12 LIMIT 1
-)
-INSERT INTO trajets (id_train, id_liaison, date_heure_depart_prevue, date_heure_arrive_prevue)
-SELECT id_train, id_liaison, '2025-03-01 08:00:00', '2025-03-01 09:00:00'
-FROM new_train, new_liaison;
+    -- Vérifier si un train existe déjà sur cette ligne, sinon l'ajouter
+    SELECT id_train INTO new_train_id 
+    FROM trains
+    WHERE id_ligne_habituelle = new_ligne_id AND type_train = 'TGV' LIMIT 1;
 
--- 5. Ajouter un incident pour la nouvelle ligne (vérifier s'il existe déjà)
--- Vérifier si l'incident existe déjà avant de l'ajouter
-INSERT INTO incidents (type_incident, gravite, description)
-SELECT 'Incident Test', 'avec impact', 'Problème technique sur la nouvelle ligne'
-WHERE NOT EXISTS (
-    SELECT 1 FROM incidents 
-    WHERE type_incident = 'Incident Test' 
-    AND description = 'Problème technique sur la nouvelle ligne'
-) RETURNING id_incident;
+    -- Si le train n'existe pas, on l'ajoute
+    IF NOT FOUND THEN
+        INSERT INTO trains (type_train, id_ligne_habituelle, capacite)  
+        VALUES ('TGV', new_ligne_id, 500)  
+        RETURNING id_train INTO new_train_id;
+    END IF;
 
--- 6. Ajouter l'incident dans la table incidents_lignes (séparer de l'insertion de l'incident)
-INSERT INTO incidents_lignes (id_ligne, id_incident, compte_rendu, date_heure_debut)
-SELECT id_ligne, id_incident, 'Problème de signalisation', '2025-02-05 12:00:00'
-FROM lignes, incidents
-WHERE nom = 'Nouvelle Ligne' AND type_incident = 'Incident Test' 
-AND description = 'Problème technique sur la nouvelle ligne';
+    -- Planifier des trajets directs pour limiter les correspondances  
+    INSERT INTO trajets (id_train, id_liaison, date_heure_depart_prevue, date_heure_arrive_prevue)  
+    SELECT  
+        new_train_id,  
+        id_liaison,  
+        '2025-02-06 07:00:00',  
+        '2025-02-06 08:30:00'  
+    FROM lignes_liaisons  
+    WHERE id_ligne = new_ligne_id;
+
+    -- Afficher un message de confirmation  
+    RAISE NOTICE 'Nouvelle ligne créée avec succès : Ligne ID %', new_ligne_id;
+END $$;
