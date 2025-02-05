@@ -36,5 +36,5 @@ WITH RECURSIVE trajets_possibles AS (
 
 SELECT * 
 FROM trajets_possibles 
-WHERE quai_arrivee IN (SELECT id_quai FROM quais WHERE id_gare = 5)
+WHERE quai_arrivee IN (SELECT id_quai FROM quais WHERE id_gare = 10)
 ORDER BY nb_correspondances ASC, (date_heure_depart_prevue - date_heure_arrive_prevue) ASC;
