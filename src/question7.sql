@@ -24,4 +24,4 @@ JOIN trajets t ON t.date_heure_depart_reelle IS NOT NULL
   AND (it.date_heure_fin IS NULL OR it.date_heure_fin >= t.date_heure_arrive_reelle)
 GROUP BY i.type_incident
 ORDER BY retard_total_minutes DESC
-LIMIT 10;
+LIMIT 5;
