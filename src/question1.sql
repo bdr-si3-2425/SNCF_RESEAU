@@ -12,7 +12,7 @@ WITH RECURSIVE trajets_possibles AS (
         0 AS nb_correspondances  -- 0 correspondances au début
     FROM trajets t
     JOIN liaisons l ON t.id_liaison = l.id_liaison
-    WHERE l.id_quai1 IN (SELECT id_quai FROM quais WHERE id_gare = 'gare_A')
+    WHERE l.id_quai1 IN (SELECT id_quai FROM quais WHERE id_gare = 1)
 
     UNION ALL
 
@@ -36,5 +36,5 @@ WITH RECURSIVE trajets_possibles AS (
 
 SELECT * 
 FROM trajets_possibles 
-WHERE quai_arrivee IN (SELECT id_quai FROM quais WHERE id_gare = 'gare_B')
+WHERE quai_arrivee IN (SELECT id_quai FROM quais WHERE id_gare = 5)
 ORDER BY nb_correspondances ASC, (date_heure_depart_prevue - date_heure_arrive_prevue) ASC;

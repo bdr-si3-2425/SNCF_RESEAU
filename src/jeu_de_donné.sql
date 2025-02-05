@@ -60,7 +60,7 @@ INSERT INTO liaisons (id_liaison, id_quai1, id_quai2) VALUES
 (10, 17, 19), -- Strasbourg -> Toulouse
 
 (11, 7, 11), -- Marseille -> Lyon
-(12, 10, 13), -- Toulouse -> Bordeaux
+(12, 13, 10), -- Bordeaux -> Toulouse
 (13, 7, 14), -- Nantes -> Bordeaux
 (14, 9, 6), -- Strasbourg -> Marseille
 (15, 1, 4),
@@ -84,6 +84,8 @@ INSERT INTO lignes (id_ligne, nom) VALUES
 (4, 'Ligne Paris-Lyon'),
 (5, 'Ligne Lyon-Marseille'),
 (6, 'Ligne Paris-Bordeaux'),
+(6, 'Ligne Paris-Toulouse'),
+(12, 'Ligne Paris-Toulouse'),
 (7, 'Ligne Bordeaux-Nantes'),
 (8, 'Ligne Paris-Strasbourg'),
 (9, 'Ligne Paris-Toulouse'),
